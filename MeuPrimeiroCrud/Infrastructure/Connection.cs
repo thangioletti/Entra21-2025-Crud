@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Dapper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,14 @@ namespace MeuPrimeiroCrud.Infrastructure
         public MySqlConnection GetConnection()
         {
             return new MySqlConnection(connectionString);
+        }
+
+        public async Task<int> Execute(string sql, object obj)
+        {
+            using (MySqlConnection con = GetConnection())
+            {
+                return await con.ExecuteAsync(sql, obj);
+            }
         }
     }
 }
